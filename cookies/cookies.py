@@ -188,9 +188,9 @@ class Cookies(commands.Cog):
             f"You got caught while trying to steal {target.display_name}'s :cookie:\nYour penalty is {penalty} :cookie: which they got!"
         )
 
-    @commands.command()
+    @commands.command(aliases=["cgive"])
     @commands.guild_only()
-    async def give(self, ctx: commands.Context, target: discord.Member, amount: int):
+    async def cookiegive(self, ctx: commands.Context, target: discord.Member, amount: int):
         """Give someone some yummy cookies."""
         um_conf = (
             self.config.user(ctx.author)
@@ -216,7 +216,7 @@ class Cookies(commands.Cog):
             f"{ctx.author.mention} has gifted {amount} :cookie: to {target.mention}"
         )
 
-    @commands.command(aliases=["jar"])
+    @commands.command(aliases=["cbal"])
     @commands.guild_only()
     async def cookies(
         self, ctx: commands.Context, *, target: typing.Optional[discord.Member]
@@ -241,7 +241,7 @@ class Cookies(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    async def exchange(
+    async def cookieexchange(
         self,
         ctx: commands.Context,
         amount: int,
