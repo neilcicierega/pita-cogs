@@ -85,7 +85,7 @@ class RecyclingPlant(Cog):
                 y += 1
             elif answer.content.lower().strip() == opp:
                 await ctx.send(
-                    "{}, you little brute, you put it down the wrong chute! (**-50**)".format(
+                    "wrong answer dumbass".format(
                         ctx.author.display_name
                     )
                 )
