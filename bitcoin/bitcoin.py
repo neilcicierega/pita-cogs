@@ -61,49 +61,6 @@ class Bitcoin(commands.Cog):
         context = super().format_help_for_context(ctx)
         return f"{context}\n\nVersion: {self.__version__}"
 
-    @commands.command()
-    @commands.guild_only()
-    async def bitcoin(self, ctx: commands.Context):
-        """Get your daily dose of bitcoins."""
-        cur_time = calendar.timegm(ctx.message.created_at.utctimetuple())
-
-        if await self.config.is_global():
-            conf = self.config
-            um_conf = self.config.user(ctx.author)
-        else:
-            conf = self.config.guild(ctx.guild)
-            um_conf = self.config.member(ctx.author)
-
-        amount = await conf.amount()
-        bitcoins = await um_conf.bitcoins()
-        next_bitcoin = await um_conf.next_bitcoin()
-        minimum = await conf.minimum()
-        maximum = await conf.maximum()
-
-        if cur_time >= next_bitcoin:
-            if amount != 0:
-                multipliers = []
-                for role in ctx.author.roles:
-                    role_multiplier = await self.config.role(role).multiplier()
-                    if not role_multiplier:
-                        role_multiplier = 1
-                    multipliers.append(role_multiplier)
-                amount *= max(multipliers)
-            else:
-                amount = int(random.choice(list(range(minimum, maximum))))
-            if self._max_balance_check(bitcoins + amount):
-                return await ctx.send(
-                    "Uh oh, you have reached the maximum amount of bitcoin that you can put in your bag. :frowning:"
-                )
-            next_bitcoin = cur_time + await conf.cooldown()
-            await um_conf.next_bitcoin.set(next_bitcoin)
-            await self.deposit_bitcoins(ctx.author, amount)
-            await ctx.send(
-                f"Here {'is' if amount == 1 else 'are'} your {amount} :coin:"
-            )
-        else:
-            dtime = self.display_time(next_bitcoin - cur_time)
-            await ctx.send(f"Uh oh, you have to wait {dtime}.")
 
     @commands.command()
     @commands.guild_only()
