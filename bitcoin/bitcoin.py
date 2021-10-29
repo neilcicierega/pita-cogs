@@ -107,7 +107,7 @@ class Bitcoin(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    async def steal(
+    async def bitcoinsteal(
         self, ctx: commands.Context, *, target: typing.Optional[discord.Member]
     ):
         """Steal bitcoins from members."""
