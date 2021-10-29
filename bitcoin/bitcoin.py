@@ -144,7 +144,7 @@ class Bitcoin(commands.Cog):
             target_bitcoins = await self.config.member(target).bitcoins()
         if target_bitcoins == 0:
             return await ctx.send(
-                f"Uh oh, {target.display_name} doesn't have any :bitcoin:"
+                f"Uh oh, {target.display_name} doesn't have any :coin:"
             )
 
         await um_conf.next_steal.set(cur_time + await conf.stealcd())
@@ -157,12 +157,12 @@ class Bitcoin(commands.Cog):
             if self._max_balance_check(author_bitcoins + stolen):
                 return await ctx.send(
                     "Uh oh, you have reached the maximum amount of bitcoins that you can put in your jar. :frowning:\n"
-                    f"You didn't steal any :bitcoin: from {target.display_name}."
+                    f"You didn't steal any :coin: from {target.display_name}."
                 )
             await self.deposit_bitcoin(ctx.author, stolen)
             await self.withdraw_bitcoins(target, stolen)
             return await ctx.send(
-                f"You stole {stolen} :bitcoin: from {target.display_name}!"
+                f"You stole {stolen} :coin: from {target.display_name}!"
             )
 
         bitcoins_penalty = int(author_bitcoins * 0.25)
@@ -170,7 +170,7 @@ class Bitcoin(commands.Cog):
             bitcoins_penalty = 1
         if bitcoins_penalty <= 0:
             return await ctx.send(
-                f"Uh oh, you got caught while trying to steal {target.display_name}'s :bitcoin:\n"
+                f"Uh oh, you got caught while trying to steal {target.display_name}'s :coin:\n"
                 f"You don't have any bitcoins, so you haven't lost any."
             )
         penalty = random.randint(1, bitcoins_penalty)
@@ -178,14 +178,14 @@ class Bitcoin(commands.Cog):
             penalty = author_bitcoins
         if self._max_balance_check(target_bitcoins + penalty):
             return await ctx.send(
-                f"Uh oh, you got caught while trying to steal {target.display_name}'s :bitcoin:\n"
+                f"Uh oh, you got caught while trying to steal {target.display_name}'s :coin:\n"
                 f"{target.display_name} has reached the maximum amount of bitcoins, "
                 "so you haven't lost any."
             )
         await self.deposit_bitcoins(target, penalty)
         await self.withdraw_bitcoins(ctx.author, penalty)
         await ctx.send(
-            f"You got caught while trying to steal {target.display_name}'s :bitcoin:\nYour penalty is {penalty} :bitcoin: which they got!"
+            f"You got caught while trying to steal {target.display_name}'s :coin:\nYour penalty is {penalty} :coin: which they got!"
         )
 
     @commands.command()
@@ -213,7 +213,7 @@ class Bitcoin(commands.Cog):
         await self.withdraw_bitcoins(ctx.author, amount)
         await self.deposit_bitcoins(target, amount)
         await ctx.send(
-            f"{ctx.author.mention} has gifted {amount} :bitcoin: to {target.mention}"
+            f"{ctx.author.mention} has gifted {amount} :coin: to {target.mention}"
         )
 
     @commands.command(aliases=["jar"])
@@ -270,7 +270,7 @@ class Bitcoin(commands.Cog):
                 return await ctx.send(f"Uh oh, your jar would be way too full.")
             await self.deposit_bitcoins(ctx.author, new_bitcoins)
             return await ctx.send(
-                f"You have exchanged {amount} {currency} and got {new_bitcoins} :bitcoin:"
+                f"You have exchanged {amount} {currency} and got {new_bitcoins} :coin:"
             )
         new_currency = int(amount / rate)
         try:
@@ -279,7 +279,7 @@ class Bitcoin(commands.Cog):
             return await ctx.send(f"Uh oh, your bank balance would be way too high.")
         await self.withdraw_bitcoins(ctx.author, amount)
         return await ctx.send(
-            f"You have exchanged {amount} :bitcoin: and got {new_currency} {currency}"
+            f"You have exchanged {amount} :coin: and got {new_currency} {currency}"
         )
 
     @commands.command()
@@ -472,7 +472,7 @@ class Bitcoin(commands.Cog):
             else self.config.member(target)
         )
         await um_conf.bitcoins.set(amount)
-        await ctx.send(f"Set {target.mention}'s balance to {amount} :bitcoin:")
+        await ctx.send(f"Set {target.mention}'s balance to {amount} :coin:")
 
     @bitcoinset.command(name="add")
     async def bitcoinset_add(
@@ -492,7 +492,7 @@ class Bitcoin(commands.Cog):
                 f"Uh oh, {target.display_name} has reached the maximum amount of bitcoins."
             )
         await self.deposit_bitcoins(target, amount)
-        await ctx.send(f"Added {amount} :bitcoin: to {target.mention}'s balance.")
+        await ctx.send(f"Added {amount} :coin: to {target.mention}'s balance.")
 
     @bitcoinset.command(name="take")
     async def bitcoinset_take(
@@ -510,7 +510,7 @@ class Bitcoin(commands.Cog):
         if amount <= target_bitcoins:
             await self.withdraw_bitcoins(target, amount)
             return await ctx.send(
-                f"Took away {amount} :bitcoin: from {target.mention}'s balance."
+                f"Took away {amount} :coin: from {target.mention}'s balance."
             )
         await ctx.send(f"{target.mention} doesn't have enough :bitcoins:")
 
@@ -546,7 +546,7 @@ class Bitcoin(commands.Cog):
         currency = await bank.get_currency_name(ctx.guild)
         test_amount = 100 * rate
         await ctx.send(
-            f"Set the exchange rate {rate}. This means that 100 {currency} will give you {test_amount} :bitcoin:"
+            f"Set the exchange rate {rate}. This means that 100 {currency} will give you {test_amount} :coin:"
         )
 
     @bitcoinset.command(name="settings")
@@ -600,19 +600,19 @@ class Bitcoin(commands.Cog):
         if amount <= 0:
             return await ctx.send("Uh oh, amount has to be more than 0.")
         await self.config.role(role).bitcoins.set(amount)
-        await ctx.send(f"Gaining {role.name} will now give {amount} :bitcoin:")
+        await ctx.send(f"Gaining {role.name} will now give {amount} :coin:")
 
     @role.command(name="del")
     async def bitcoinset_role_del(self, ctx: commands.Context, role: discord.Role):
         """Delete bitcoins for role."""
         await self.config.role(role).bitcoins.set(0)
-        await ctx.send(f"Gaining {role.name} will now not give any :bitcoin:")
+        await ctx.send(f"Gaining {role.name} will now not give any :coin:")
 
     @role.command(name="show")
     async def bitcoinset_role_show(self, ctx: commands.Context, role: discord.Role):
         """Show how many bitcoins a role gives."""
         bitcoins = int(await self.config.role(role).bitcoins())
-        await ctx.send(f"Gaining {role.name} gives {bitcoins} :bitcoin:")
+        await ctx.send(f"Gaining {role.name} gives {bitcoins} :coin:")
 
     @role.command(name="multiplier")
     async def bitcoinset_role_multiplier(
@@ -625,7 +625,7 @@ class Bitcoin(commands.Cog):
             return await ctx.send("Uh oh, multiplier has to be more than 0.")
         await self.config.role(role).multiplier.set(multiplier)
         await ctx.send(
-            f"Users with {role.name} will now get {multiplier} times more :bitcoin:"
+            f"Users with {role.name} will now get {multiplier} times more :coin:"
         )
 
     @commands.Cog.listener()
