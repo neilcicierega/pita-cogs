@@ -5,7 +5,7 @@ from .bitcoin import Bitcoin
 
 async def setup_after_ready(bot):
     await bot.wait_until_red_ready()
-    cog = Cookies(bot)
+    cog = Bitcoin(bot)
     for name, command in cog.all_commands.items():
         if not command.parent:
             if bot.get_command(name):
