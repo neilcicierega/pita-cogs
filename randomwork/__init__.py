@@ -1,6 +1,6 @@
 from redbot.core import data_manager
 
-from .recyclingplant import RecyclingPlant
+from .randomwork import RecyclingPlant
 
 
 def setup(bot):
