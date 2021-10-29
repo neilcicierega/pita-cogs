@@ -1,0 +1,9 @@
+{
+    "author" : ["foz"],
+    "install_msg" : "Thank you for installing Bitcoin!",
+    "name" : "Bitcoin",
+    "short" : "Collect Bitcoin.",
+    "description" : "Collect Bitcoin and steal from others.",
+    "tags" : ["bitcoin", "currency"],
+    "end_user_data_statement": "This cog stores the amount of bitcoin users have."
+}
