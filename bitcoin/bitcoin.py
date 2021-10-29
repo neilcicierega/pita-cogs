@@ -190,7 +190,7 @@ class Bitcoin(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    async def give(self, ctx: commands.Context, target: discord.Member, amount: int):
+    async def bitcoingive(self, ctx: commands.Context, target: discord.Member, amount: int):
         """Give someone some yummy bitcoins."""
         um_conf = (
             self.config.user(ctx.author)
@@ -284,7 +284,7 @@ class Bitcoin(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    async def leaderboard(self, ctx: commands.Context):
+    async def bitcoinleaderboard(self, ctx: commands.Context):
         """Display the server's bitcoin leaderboard."""
         ids = await self._get_ids(ctx)
         lst = []
