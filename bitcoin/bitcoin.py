@@ -159,7 +159,7 @@ class Bitcoin(commands.Cog):
                     "Uh oh, you have reached the maximum amount of cookies that you can put in your jar. :frowning:\n"
                     f"You didn't steal any :cookie: from {target.display_name}."
                 )
-            await self.deposit_cookies(ctx.author, stolen)
+            await self.deposit_bitcoin(ctx.author, stolen)
             await self.withdraw_cookies(target, stolen)
             return await ctx.send(
                 f"You stole {stolen} :cookie: from {target.display_name}!"
