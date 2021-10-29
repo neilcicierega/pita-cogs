@@ -7,7 +7,7 @@ from redbot.core.commands import Cog
 from redbot.core.data_manager import bundled_data_path
 
 
-class RecyclingPlant(Cog):
+class RandomWork(Cog):
     """Apply for a job at the recycling plant!"""
 
     def __init__(self, bot):
@@ -24,9 +24,9 @@ class RecyclingPlant(Cog):
         with junk_path.open() as json_data:
             self.junk = json.load(json_data)
 
-    @commands.command(aliases=["recycle"])
-    async def recyclingplant(self, ctx: commands.Context):
-        """Apply for a job at the recycling plant!"""
+    @commands.command(aliases=["rwork"])
+    async def randomwork(self, ctx: commands.Context):
+        """Apply for a job at shittown!"""
         if self.junk is None:
             self.load_junk()
 
@@ -35,7 +35,7 @@ class RecyclingPlant(Cog):
         y = 0
         timeoutcount = 0
         await ctx.send(
-            "{0} has signed up for a shift at the Recycling Plant! Type ``exit`` to terminate it early.".format(
+            "{0} has signed up for a shift at the whore center! Type ``exit`` to terminate it early.".format(
                 ctx.author.display_name
             )
         )
