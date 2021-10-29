@@ -341,7 +341,7 @@ class Bitcoin(commands.Cog):
     @checks.admin()
     @commands.guild_only()
     async def bitcoinset(self, ctx):
-        """Various Bitcoins settings."""
+        """Various Bitcoin settings."""
 
     @bitcoinset.command(name="gg")
     async def bitcoinset_gg(
