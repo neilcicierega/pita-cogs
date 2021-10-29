@@ -20,7 +20,7 @@ class RecyclingPlant(Cog):
         return
 
     def load_junk(self):
-        junk_path = bundled_data_path(self) / "junk.json"
+        junk_path = bundled_data_path(self) / "shit.json"
         with junk_path.open() as json_data:
             self.junk = json.load(json_data)
 
