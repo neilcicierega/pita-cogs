@@ -1,6 +1,6 @@
 from asyncio import create_task
 
-from .cookies import Cookies
+from .bitcoin import Cookies
 
 
 async def setup_after_ready(bot):
