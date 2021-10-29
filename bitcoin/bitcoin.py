@@ -396,7 +396,6 @@ class Bitcoin(commands.Cog):
 
         embed.add_field(name="Global:", value=str(is_global))
         embed.add_field(name="Exchange rate:", value=str(data["rate"]))
-        embed.add_field(name="\u200b", value="\u200b")
         embed.add_field(name="Amount:", value=amount)
 
         await ctx.send(embed=embed)
