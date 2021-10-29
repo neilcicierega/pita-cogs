@@ -85,7 +85,7 @@ class Bitcoin(commands.Cog):
             f"{ctx.author.mention} has gifted {amount} :coin: to {target.mention}"
         )
 
-    @commands.command(aliases=["jar"])
+    @commands.command(aliases=["bbal"])
     @commands.guild_only()
     async def bitcoinbal(
         self, ctx: commands.Context, *, target: typing.Optional[discord.Member]
