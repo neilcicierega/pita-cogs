@@ -89,7 +89,6 @@ class RecyclingPlant(Cog):
                         ctx.author.display_name
                     )
                 )
-                reward -= 50
                 x += 1
             elif answer.content.lower().strip() == "exit":
                 await ctx.send(
