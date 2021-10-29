@@ -85,9 +85,7 @@ class RecyclingPlant(Cog):
                 y += 1
             elif answer.content.lower().strip() == opp:
                 await ctx.send(
-                    "wrong answer dumbass".format(
-                        ctx.author.display_name
-                    )
+                    "wrong answer dumbass".format(ctx.author.display_name)
                 )
                 x += 1
             elif answer.content.lower().strip() == "exit":
