@@ -90,6 +90,7 @@ class RecyclingPlant(Cog):
                     )
                 )
                 reward -= 50
+                x += 1
             elif answer.content.lower().strip() == "exit":
                 await ctx.send(
                     "{} has been relived of their duty.".format(ctx.author.display_name)
