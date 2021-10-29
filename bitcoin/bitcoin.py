@@ -97,7 +97,7 @@ class Bitcoin(commands.Cog):
                 )
             next_bitcoin = cur_time + await conf.cooldown()
             await um_conf.next_bitcoin.set(next_bitcoin)
-            await self.deposit_bitcoin(ctx.author, amount)
+            await self.deposit_bitcoins(ctx.author, amount)
             await ctx.send(
                 f"Here {'is' if amount == 1 else 'are'} your {amount} :coin:"
             )
