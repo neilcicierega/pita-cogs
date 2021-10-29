@@ -228,7 +228,7 @@ class Bitcoin(commands.Cog):
                 if await self.config.is_global()
                 else self.config.member(ctx.author)
             )
-            cookies = await um_conf.cookies()
+            cookies = await um_conf.bitcoins()
             await ctx.send(f"You have {bitcoins} :coin:")
         else:
             um_conf = (
@@ -236,7 +236,7 @@ class Bitcoin(commands.Cog):
                 if await self.config.is_global()
                 else self.config.member(target)
             )
-            cookies = await um_conf.cookies()
+            cookies = await um_conf.bitcoins()
             await ctx.send(f"{target.display_name} has {bitcoin} :coin:")
 
     @commands.command()
