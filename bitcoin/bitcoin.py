@@ -31,9 +31,6 @@ class Bitcoin(commands.Cog):
             amount=1,
             minimum=0,
             maximum=0,
-            cooldown=43200,
-            stealing=False,
-            stealcd=43200,
             rate=0.5,
         )
         self.config.register_global(
@@ -41,9 +38,6 @@ class Bitcoin(commands.Cog):
             amount=1,
             minimum=0,
             maximum=0,
-            cooldown=43200,
-            stealing=False,
-            stealcd=43200,
             rate=0.5,
         )
 
@@ -62,88 +56,6 @@ class Bitcoin(commands.Cog):
         return f"{context}\n\nVersion: {self.__version__}"
 
 
-    @commands.command()
-    @commands.guild_only()
-    async def bitcoinsteal(
-        self, ctx: commands.Context, *, target: typing.Optional[discord.Member]
-    ):
-        """Steal bitcoins from members."""
-        cur_time = calendar.timegm(ctx.message.created_at.utctimetuple())
-
-        if await self.config.is_global():
-            conf = self.config
-            um_conf = self.config.user(ctx.author)
-        else:
-            conf = self.config.guild(ctx.guild)
-            um_conf = self.config.member(ctx.author)
-
-        next_steal = await um_conf.next_steal()
-        enabled = await conf.stealing()
-        author_bitcoins = await um_conf.bitcoins()
-
-        if not enabled:
-            return await ctx.send("Uh oh, stealing is disabled.")
-        if cur_time < next_steal:
-            dtime = self.display_time(next_steal - cur_time)
-            return await ctx.send(f"Uh oh, you have to wait {dtime}.")
-
-        if not target:
-            # target can only be from the same server
-            ids = await self._get_ids(ctx)
-            while not target:
-                target_id = random.choice(ids)
-                target = ctx.guild.get_member(target_id)
-        if target.id == ctx.author.id:
-            return await ctx.send("Uh oh, you can't steal from yourself.")
-        if await self.config.is_global():
-            target_bitcoins = await self.config.user(target).bitcoins()
-        else:
-            target_bitcoins = await self.config.member(target).bitcoins()
-        if target_bitcoins == 0:
-            return await ctx.send(
-                f"Uh oh, {target.display_name} doesn't have any :coin:"
-            )
-
-        await um_conf.next_steal.set(cur_time + await conf.stealcd())
-
-        if random.randint(1, 100) > 90:
-            bitcoins_stolen = int(target_bitcoins * 0.5)
-            if bitcoins_stolen == 0:
-                bitcoins_stolen = 1
-            stolen = random.randint(1, bitcoins_stolen)
-            if self._max_balance_check(author_bitcoins + stolen):
-                return await ctx.send(
-                    "Uh oh, you have reached the maximum amount of bitcoins that you can put in your jar. :frowning:\n"
-                    f"You didn't steal any :coin: from {target.display_name}."
-                )
-            await self.deposit_bitcoin(ctx.author, stolen)
-            await self.withdraw_bitcoins(target, stolen)
-            return await ctx.send(
-                f"You stole {stolen} :coin: from {target.display_name}!"
-            )
-
-        bitcoins_penalty = int(author_bitcoins * 0.25)
-        if bitcoins_penalty == 0:
-            bitcoins_penalty = 1
-        if bitcoins_penalty <= 0:
-            return await ctx.send(
-                f"Uh oh, you got caught while trying to steal {target.display_name}'s :coin:\n"
-                f"You don't have any bitcoins, so you haven't lost any."
-            )
-        penalty = random.randint(1, bitcoins_penalty)
-        if author_bitcoins < penalty:
-            penalty = author_bitcoins
-        if self._max_balance_check(target_bitcoins + penalty):
-            return await ctx.send(
-                f"Uh oh, you got caught while trying to steal {target.display_name}'s :coin:\n"
-                f"{target.display_name} has reached the maximum amount of bitcoins, "
-                "so you haven't lost any."
-            )
-        await self.deposit_bitcoins(target, penalty)
-        await self.withdraw_bitcoins(ctx.author, penalty)
-        await ctx.send(
-            f"You got caught while trying to steal {target.display_name}'s :coin:\nYour penalty is {penalty} :coin: which they got!"
-        )
 
     @commands.command()
     @commands.guild_only()
@@ -363,40 +275,6 @@ class Bitcoin(commands.Cog):
             f"Members will receive a random amount of bitcoins between {minimum} and {maximum}."
         )
 
-    @bitcoinset.command(name="stealcooldown", aliases=["stealcd"])
-    async def bitcoinset_stealcd(self, ctx: commands.Context, seconds: int):
-        """Set the cooldown for `[p]steal`.
-
-        This is in seconds! Default is 43200 seconds (12 hours)."""
-        if seconds <= 0:
-            return await ctx.send("Uh oh, cooldown has to be more than 0 seconds.")
-        conf = (
-            self.config
-            if await self.config.is_global()
-            else self.config.guild(ctx.guild)
-        )
-        await conf.stealcd.set(seconds)
-        await ctx.send(f"Set the cooldown to {seconds} seconds.")
-
-    @bitcoinset.command(name="steal")
-    async def bitcoinset_steal(
-        self, ctx: commands.Context, on_off: typing.Optional[bool]
-    ):
-        """Toggle bitcoin stealing for current server.
-
-        If `on_off` is not provided, the state will be flipped."""
-        conf = (
-            self.config
-            if await self.config.is_global()
-            else self.config.guild(ctx.guild)
-        )
-        target_state = on_off or not (await conf.stealing())
-        await conf.stealing.set(target_state)
-        if target_state:
-            await ctx.send("Stealing is now enabled.")
-        else:
-            await ctx.send("Stealing is now disabled.")
-
     @bitcoinset.command(name="set")
     async def bitcoinset_set(
         self, ctx: commands.Context, target: discord.Member, amount: int
@@ -508,8 +386,6 @@ class Bitcoin(commands.Cog):
             else f"random amount between {data['minimum']} and {data['maximum']}"
         )
 
-        stealing = data["stealing"]
-        stealing = "Enabled" if stealing else "Disabled"
 
         embed = discord.Embed(
             colour=await ctx.embed_colour(), timestamp=datetime.datetime.now()
@@ -522,8 +398,6 @@ class Bitcoin(commands.Cog):
         embed.add_field(name="Exchange rate:", value=str(data["rate"]))
         embed.add_field(name="\u200b", value="\u200b")
         embed.add_field(name="Amount:", value=amount)
-        embed.add_field(name="Stealing:", value=stealing)
-        embed.add_field(name="Cooldown:", value=self.display_time(data["stealcd"]))
 
         await ctx.send(embed=embed)
 
