@@ -101,7 +101,7 @@ class RecyclingPlant(Cog):
             if reward > 0:
                 await bank.deposit_credits(ctx.author, reward)
             await ctx.send(
-                "{} has been given **{} {}** for their services.".format(
-                    ctx.author.display_name, reward / 50, await bank.get_currency_name(ctx.guild)
+                "{} got **{}/10** right! **{} {}** have been deposited".format(
+                    ctx.author.display_name, reward / 50, reward, await bank.get_currency_name(ctx.guild)
                 )
             )
