@@ -241,7 +241,7 @@ class Bitcoin(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    async def exchange(
+    async def bitcoinexchange(
         self,
         ctx: commands.Context,
         amount: int,
