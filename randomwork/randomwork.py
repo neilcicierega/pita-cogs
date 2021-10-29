@@ -32,6 +32,7 @@ class RecyclingPlant(Cog):
 
         x = 0
         reward = 0
+        correct = int(reward)
         timeoutcount = 0
         await ctx.send(
             "{0} has signed up for a shift at the Recycling Plant! Type ``exit`` to terminate it early.".format(
@@ -101,7 +102,7 @@ class RecyclingPlant(Cog):
             if reward > 0:
                 await bank.deposit_credits(ctx.author, reward)
             await ctx.send(
-                "{} got **{}/10** right! **{} {}** have been deposited".format(
-                    ctx.author.display_name, reward / 50, reward, await bank.get_currency_name(ctx.guild)
+                "{} got **{}/10** right. **{} {}** have been deposited!".format(
+                    ctx.author.display_name, correct / 50, reward, await bank.get_currency_name(ctx.guild)
                 )
             )
