@@ -363,21 +363,6 @@ class Bitcoin(commands.Cog):
             f"Members will receive a random amount of bitcoins between {minimum} and {maximum}."
         )
 
-    @bitcoinset.command(name="cooldown", aliases=["cd"])
-    async def bitcoinset_cd(self, ctx: commands.Context, seconds: int):
-        """Set the cooldown for `[p]bitcoin`.
-
-        This is in seconds! Default is 43200 seconds (24 hours)."""
-        if seconds <= 0:
-            return await ctx.send("Uh oh, cooldown has to be more than 0 seconds.")
-        conf = (
-            self.config
-            if await self.config.is_global()
-            else self.config.guild(ctx.guild)
-        )
-        await conf.cooldown.set(seconds)
-        await ctx.send(f"Set the cooldown to {seconds} seconds.")
-
     @bitcoinset.command(name="stealcooldown", aliases=["stealcd"])
     async def bitcoinset_stealcd(self, ctx: commands.Context, seconds: int):
         """Set the cooldown for `[p]steal`.
@@ -537,8 +522,6 @@ class Bitcoin(commands.Cog):
         embed.add_field(name="Exchange rate:", value=str(data["rate"]))
         embed.add_field(name="\u200b", value="\u200b")
         embed.add_field(name="Amount:", value=amount)
-        embed.add_field(name="Cooldown:", value=self.display_time(data["cooldown"]))
-        embed.add_field(name="\u200b", value="\u200b")
         embed.add_field(name="Stealing:", value=stealing)
         embed.add_field(name="Cooldown:", value=self.display_time(data["stealcd"]))
 
