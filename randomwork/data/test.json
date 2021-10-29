@@ -2,7 +2,7 @@
   "can": [
     {
       "object": "yes",
-      "action": "si"
+      "action": "yes"
     },
      {
       "object": "no",
