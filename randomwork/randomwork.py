@@ -40,12 +40,12 @@ class RecyclingPlant(Cog):
         )
         while x in range(0, 10):
             used = random.choice(self.junk["can"])
-            if used["action"] == "trash":
-                opp = "recycle"
+            if used["action"] == "yes":
+                opp = "no"
             else:
-                opp = "trash"
+                opp = "yes"
             await ctx.send(
-                "``{}``! Will {} ``trash`` it or ``recycle`` it?".format(
+                "``{}``! Will {} ``yes`` it or ``no`` it?".format(
                     used["object"], ctx.author.display_name
                 )
             )
