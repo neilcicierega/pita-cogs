@@ -15,7 +15,7 @@ from redbot.core.bot import Red
 _MAX_BALANCE = 2 ** 63 - 1
 
 
-class Cookies(commands.Cog):
+class Bitcoin(commands.Cog):
     """
     Collect cookies and steal from others.
     """
@@ -47,10 +47,10 @@ class Cookies(commands.Cog):
             rate=0.5,
         )
 
-        self.config.register_member(cookies=0, next_cookie=0, next_steal=0)
-        self.config.register_user(cookies=0, next_cookie=0, next_steal=0)
+        self.config.register_member(bitcoins=0, next_bitcoin=0, next_steal=0)
+        self.config.register_user(bitcoins=0, next_bitcoin=0, next_steal=0)
 
-        self.config.register_role(cookies=0, multiplier=1)
+        self.config.register_role(bitcoins=0, multiplier=1)
 
     async def red_delete_data_for_user(self, *, requester, user_id):
         await self.config.user_from_id(user_id).clear()
@@ -75,12 +75,12 @@ class Cookies(commands.Cog):
             um_conf = self.config.member(ctx.author)
 
         amount = await conf.amount()
-        cookies = await um_conf.cookies()
-        next_cookie = await um_conf.next_cookie()
+        bitcoins = await um_conf.bitcoins()
+        next_bitcoin = await um_conf.next_bitcoin()
         minimum = await conf.minimum()
         maximum = await conf.maximum()
 
-        if cur_time >= next_cookie:
+        if cur_time >= next_bitcoin:
             if amount != 0:
                 multipliers = []
                 for role in ctx.author.roles:
@@ -91,18 +91,18 @@ class Cookies(commands.Cog):
                 amount *= max(multipliers)
             else:
                 amount = int(random.choice(list(range(minimum, maximum))))
-            if self._max_balance_check(cookies + amount):
+            if self._max_balance_check(bitcoins + amount):
                 return await ctx.send(
-                    "Uh oh, you have reached the maximum amount of cookies that you can put in your bag. :frowning:"
+                    "Uh oh, you have reached the maximum amount of bitcoin that you can put in your bag. :frowning:"
                 )
-            next_cookie = cur_time + await conf.cooldown()
-            await um_conf.next_cookie.set(next_cookie)
-            await self.deposit_cookies(ctx.author, amount)
+            next_bitcoin = cur_time + await conf.cooldown()
+            await um_conf.next_bitcoin.set(next_bitcoin)
+            await self.deposit_bitcoins(ctx.author, amount)
             await ctx.send(
-                f"Here {'is' if amount == 1 else 'are'} your {amount} :cookie:"
+                f"Here {'is' if amount == 1 else 'are'} your {amount} :coin:"
             )
         else:
-            dtime = self.display_time(next_cookie - cur_time)
+            dtime = self.display_time(next_bitcoin - cur_time)
             await ctx.send(f"Uh oh, you have to wait {dtime}.")
 
     @commands.command()
@@ -218,7 +218,7 @@ class Cookies(commands.Cog):
 
     @commands.command(aliases=["jar"])
     @commands.guild_only()
-    async def cookies(
+    async def bitcoinbal(
         self, ctx: commands.Context, *, target: typing.Optional[discord.Member]
     ):
         """Check how many cookies you have."""
@@ -229,7 +229,7 @@ class Cookies(commands.Cog):
                 else self.config.member(ctx.author)
             )
             cookies = await um_conf.cookies()
-            await ctx.send(f"You have {cookies} :cookie:")
+            await ctx.send(f"You have {bitcoins} :coin:")
         else:
             um_conf = (
                 self.config.user(target)
@@ -237,7 +237,7 @@ class Cookies(commands.Cog):
                 else self.config.member(target)
             )
             cookies = await um_conf.cookies()
-            await ctx.send(f"{target.display_name} has {cookies} :cookie:")
+            await ctx.send(f"{target.display_name} has {bitcoin} :coin:")
 
     @commands.command()
     @commands.guild_only()
