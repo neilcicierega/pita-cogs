@@ -261,7 +261,7 @@ class Cookies(commands.Cog):
         currency = await bank.get_currency_name(ctx.guild)
 
         if not await self._can_spend(to_currency, ctx.author, amount):
-            return await ctx.send(f"Uh oh, you cannot afford this.")
+            return await ctx.send(f"Uh oh whore, you cannot afford this.")
 
         if not to_currency:
             await bank.withdraw_credits(ctx.author, amount)
