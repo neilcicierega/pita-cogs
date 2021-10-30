@@ -31,6 +31,7 @@ class Testcoins(commands.Cog):
             types={},
         )
         self.config.register_global(
+            is_global=False,
             types={},
         )
 
