@@ -271,7 +271,7 @@ class Testcoins(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    async def leaderboard(self, ctx: commands.Context):
+    async def testcoinleaderboard(self, ctx: commands.Context):
         """Display the server's testcoin leaderboard."""
         ids = await self._get_ids(ctx)
         lst = []
