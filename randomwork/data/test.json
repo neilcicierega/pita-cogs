@@ -1,12 +1,12 @@
 {
   "can": [
     {
-      "object": "yes",
-      "action": "giant donger"
+      "object": "My cock is gigantic",
+      "action": "true"
     },
      {
-      "object": "no",
-      "action": "no"
+      "object": "Your dick is large",
+      "action": "false"
     }
   ]
 }

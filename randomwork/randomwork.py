@@ -46,7 +46,7 @@ class RandomWork(Cog):
             else:
                 opp = "yes"
             await ctx.send(
-                "``{}``! Will {} ``yes`` it or ``no`` it?".format(
+                "``{}``! True or false?".format(
                     used["object"], ctx.author.display_name
                 )
             )
