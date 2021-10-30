@@ -28,9 +28,15 @@ class Testcoins(commands.Cog):
             self, identifier=16548964843212314, force_registration=True
         )
         self.config.register_guild(
+            amount=1,
+            minimum=0,
+            maximum=0,
             types={},
         )
         self.config.register_global(
+            amount=1,
+            minimum=0,
+            maximum=0,
             is_global=False,
             types={},
         )
