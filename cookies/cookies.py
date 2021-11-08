@@ -256,7 +256,7 @@ class Cookies(commands.Cog):
             if await self.config.is_global()
             else self.config.guild(ctx.guild)
         )
-
+        amount1000 = amount*10
         rate = await conf.rate()
         currency = await bank.get_currency_name(ctx.guild)
 
@@ -265,12 +265,12 @@ class Cookies(commands.Cog):
 
         if not to_currency:
             await bank.withdraw_credits(ctx.author, amount)
-            new_cookies = int(amount * rate)
+            new_cookies = int(amount1000 * rate)
             if self._max_balance_check(new_cookies):
                 return await ctx.send(f"Uh oh, your jar would be way too full.")
             await self.deposit_cookies(ctx.author, new_cookies)
             return await ctx.send(
-                f"You have exchanged {amount} {currency} and got {new_cookies} :cookie:"
+                f"You have exchanged {amount1000} {currency} and got {new_cookies} :cookie:"
             )
         new_currency = int(amount / rate)
         try:
