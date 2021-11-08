@@ -125,7 +125,7 @@ class Bitcoin(commands.Cog):
             if await self.config.is_global()
             else self.config.guild(ctx.guild)
         )
-
+        amount10000 = amount*10000
         rate = await conf.rate()
         currency = await bank.get_currency_name(ctx.guild)
 
@@ -134,12 +134,12 @@ class Bitcoin(commands.Cog):
 
         if not to_currency:
             await bank.withdraw_credits(ctx.author, amount)
-            new_bitcoins = int(amount * rate)
+            new_bitcoins = int(amount10000 * rate)
             if self._max_balance_check(new_bitcoins):
                 return await ctx.send(f"Uh oh, your jar would be way too full.")
             await self.deposit_bitcoins(ctx.author, new_bitcoins)
             return await ctx.send(
-                f"You have exchanged {amount} {currency} and got {new_bitcoins} :coin:"
+                f"You have exchanged {amount10000} {currency} and got {new_bitcoins} :coin:"
             )
         new_currency = int(amount / rate)
         try:
