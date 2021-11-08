@@ -260,7 +260,7 @@ class Cookies(commands.Cog):
         rate = await conf.rate()
         currency = await bank.get_currency_name(ctx.guild)
 
-        if not await self._can_spend(to_currency, ctx.author, amount):
+        if not await self._can_spend(to_currency, ctx.author, amount1000):
             return await ctx.send(f"Uh oh whore, you cannot afford this.")
 
         if not to_currency:

@@ -133,7 +133,7 @@ class Bitcoin(commands.Cog):
             return await ctx.send(f"Uh oh, you cannot afford this.")
 
         if not to_currency:
-            await bank.withdraw_credits(ctx.author, amount)
+            await bank.withdraw_credits(ctx.author, amount10000)
             new_bitcoins = int(amount10000 * rate)
             if self._max_balance_check(new_bitcoins):
                 return await ctx.send(f"Uh oh, your jar would be way too full.")
