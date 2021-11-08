@@ -256,7 +256,7 @@ class Cookies(commands.Cog):
             if await self.config.is_global()
             else self.config.guild(ctx.guild)
         )
-        amount1000 = amount*10
+        amount1000 = amount*1000
         rate = await conf.rate()
         currency = await bank.get_currency_name(ctx.guild)
 
