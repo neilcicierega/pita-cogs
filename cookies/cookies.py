@@ -103,7 +103,7 @@ class Cookies(commands.Cog):
             )
         else:
             dtime = self.display_time(next_cookie - cur_time)
-            await ctx.send(f"Boo hoo bitch, you have to wait {dtime}.")
+            await ctx.send(f"Boo hoo, bitch, you have to wait {dtime}.")
 
     @commands.command()
     @commands.guild_only()
